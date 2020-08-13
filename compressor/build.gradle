@@ -28,7 +28,7 @@ ext {
     siteUrl = 'https://github.com/zetbaitsu/Compressor'
     gitUrl = 'https://github.com/zetbaitsu/Compressor.git'
 
-    libraryVersion = '3.0.0'
+    libraryVersion = '3.0.1'
 
     developerId = 'zetbaitsu'
     developerName = 'Zetra'
@@ -46,8 +46,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 29
-        versionCode 5
-        versionName "3.0.0"
+        versionCode 6
+        versionName "3.0.1"
     }
     buildTypes {
         release {
@@ -64,6 +64,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version"
+
+    implementation 'io.reactivex.rxjava3:rxjava:3.0.4'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'io.mockk:mockk:1.9.3'

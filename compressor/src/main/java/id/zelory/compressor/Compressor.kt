@@ -3,6 +3,8 @@ package id.zelory.compressor
 import android.content.Context
 import id.zelory.compressor.constraint.Compression
 import id.zelory.compressor.constraint.default
+import io.reactivex.rxjava3.core.Flowable
+import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
@@ -29,5 +31,37 @@ object Compressor {
             }
         }
         return@withContext result
+    }
+
+    fun compressAsFlowable(context: Context,
+                           imageFile: File,
+                           compressionPatch: Compression.() -> Unit = { default() }): Flowable<File> {
+        return Flowable.fromCallable {
+            val compression = Compression().apply(compressionPatch)
+            var result = copyToCache(context, imageFile)
+            compression.constraints.forEach { constraint ->
+                while (constraint.isSatisfied(result).not()) {
+                    result = constraint.satisfy(result)
+                }
+            }
+
+            return@fromCallable result
+        }
+    }
+
+    fun compressAsObservable(context: Context,
+                           imageFile: File,
+                           compressionPatch: Compression.() -> Unit = { default() }): Observable<File> {
+        return Observable.fromCallable {
+            val compression = Compression().apply(compressionPatch)
+            var result = copyToCache(context, imageFile)
+            compression.constraints.forEach { constraint ->
+                while (constraint.isSatisfied(result).not()) {
+                    result = constraint.satisfy(result)
+                }
+            }
+
+            return@fromCallable result
+        }
     }
 }
