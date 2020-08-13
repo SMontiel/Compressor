@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
         actualImage?.let { imageFile ->
             lifecycleScope.launch {
                 // Default compression
-                compressedImage = Compressor.compress(this@MainActivity, imageFile)
+                compressedImage = Compressor(this@MainActivity).compress(imageFile)
                 setCompressedImage()
             }
         } ?: showError("Please choose an image!")
@@ -90,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 }*/
 
                 // Full custom
-                compressedImage = Compressor.compress(this@MainActivity, imageFile) {
+                compressedImage = Compressor(this@MainActivity).compress(imageFile) {
                     resolution(1280, 720)
                     quality(80)
                     format(Bitmap.CompressFormat.WEBP)

@@ -16,9 +16,9 @@ import kotlin.coroutines.CoroutineContext
  * Name       : Zetra
  * GitHub     : https://github.com/zetbaitsu
  */
-object Compressor {
+class Compressor(private val context: Context) {
+
     suspend fun compress(
-            context: Context,
             imageFile: File,
             coroutineContext: CoroutineContext = Dispatchers.IO,
             compressionPatch: Compression.() -> Unit = { default() }
@@ -33,8 +33,7 @@ object Compressor {
         return@withContext result
     }
 
-    fun compressAsFlowable(context: Context,
-                           imageFile: File,
+    fun compressAsFlowable(imageFile: File,
                            compressionPatch: Compression.() -> Unit = { default() }): Flowable<File> {
         return Flowable.fromCallable {
             val compression = Compression().apply(compressionPatch)
@@ -49,8 +48,7 @@ object Compressor {
         }
     }
 
-    fun compressAsObservable(context: Context,
-                           imageFile: File,
+    fun compressAsObservable(imageFile: File,
                            compressionPatch: Compression.() -> Unit = { default() }): Observable<File> {
         return Observable.fromCallable {
             val compression = Compression().apply(compressionPatch)
